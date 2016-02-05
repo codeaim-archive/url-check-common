@@ -1,0 +1,67 @@
+repositories {
+    mavenCentral()
+    maven {
+        url "http://repo.spring.io/snapshot"
+    }
+    maven {
+        url "http://repo.spring.io/milestone"
+    }
+    jcenter()
+}
+
+buildscript {
+    dependencies {
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.3.2.RELEASE'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
+    }
+    repositories {
+        mavenCentral()
+        maven {
+            url "http://repo.spring.io/snapshot"
+        }
+        maven {
+            url "http://repo.spring.io/milestone"
+        }
+        jcenter()
+    }
+}
+
+apply plugin: "java"
+apply plugin: "idea"
+apply plugin: "spring-boot"
+apply plugin: 'com.jfrog.bintray'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+version = '0.0.1'
+group   = 'com.codeaim'
+
+jar {
+    baseName = 'url-check-common'
+}
+
+dependencies {
+    compile "org.springframework.boot:spring-boot-starter-data-jpa"
+    compile "com.h2database:h2"
+    testCompile "junit:junit"
+}
+
+bintray {
+    user = project.hasProperty('user') ? project.property('user') : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('key') ? project.property('key') : System.getenv('BINTRAY_KEY')
+    configurations = ['archives']
+    pkg {
+        repo = 'codeaim'
+        name = 'url-check-common'
+        userOrg = user
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/codeaim/url-check-common.git'
+        version {
+            name = '0.0.1'
+            desc = 'url-check-common'
+            vcsTag = '0.0.1'
+            released  = new Date()
+        }
+    }
+}
