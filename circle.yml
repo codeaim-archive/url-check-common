@@ -1,0 +1,15 @@
+machine:
+  java:
+    version: oraclejdk8
+
+dependencies:
+  override:
+    - gradle build
+
+test:
+  override:
+    - gradle test
+
+deployment:
+  override:
+    - gradle -Puser=$BINTRAY_USER -Pkey=$BINTRAY_KEY bintrayUpload
