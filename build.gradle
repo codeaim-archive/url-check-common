@@ -8,6 +8,10 @@ repositories {
     }
 }
 
+configurations {
+    compile
+}
+
 buildscript {
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:1.3.0.BUILD-SNAPSHOT"
