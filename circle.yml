@@ -4,7 +4,7 @@ machine:
 
 dependencies:
   override:
-    - gradle build --stacktrace
+    - gradle build --debug
 
 test:
   override:
