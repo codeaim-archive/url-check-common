@@ -11,5 +11,7 @@ test:
     - gradle test
 
 deployment:
-  override:
-    - gradle -Puser=$BINTRAY_USER -Pkey=$BINTRAY_KEY bintrayUpload
+  production:
+    branch: production
+    commands:
+      - gradle -Puser=$BINTRAY_USER -Pkey=$BINTRAY_KEY bintrayUpload
