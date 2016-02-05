@@ -14,4 +14,4 @@ deployment:
   production:
     branch: production
     commands:
-      - gradle -Puser=$BINTRAY_USER -Pkey=$BINTRAY_KEY bintrayUpload
+      - gradle bintrayUpload
