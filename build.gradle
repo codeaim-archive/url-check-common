@@ -50,7 +50,6 @@ dependencies {
 bintray {
     user = project.hasProperty('user') ? project.property('user') : System.getenv('BINTRAY_USER')
     key = project.hasProperty('key') ? project.property('key') : System.getenv('BINTRAY_KEY')
-    configurations = ['archives']
     pkg {
         repo = 'codeaim'
         name = 'url-check-common'
