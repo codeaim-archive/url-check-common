@@ -22,7 +22,7 @@ buildscript {
         maven {
             url "http://repo.spring.io/milestone"
         }
-        jcenter()
+        //jcenter()
     }
 }
 
@@ -44,7 +44,7 @@ jar {
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-data-jpa"
     compile "com.h2database:h2"
-    testCompile "junit:junit"
+    //testCompile "junit:junit"
 }
 
 //bintray {
