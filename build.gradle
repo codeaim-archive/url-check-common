@@ -42,7 +42,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 
-//group   = 'com.codeaim'
+group   = 'com.codeaim'
 
 jar {
     baseName = 'url-check-common'
