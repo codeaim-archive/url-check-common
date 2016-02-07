@@ -42,11 +42,11 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 
-group   = 'com.codeaim'
-
+//group   = 'com.codeaim'
+version = '0.0.1'
 jar {
     baseName = 'url-check-common'
-    version = '0.0.1'
+
 }
 
 dependencies {
