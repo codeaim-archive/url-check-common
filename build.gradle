@@ -10,10 +10,13 @@ repositories {
 
 buildscript {
     dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.3.2.RELEASE"
-        //classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6"
-        //classpath "org.codehaus.groovy:groovy-backports-compat23:2.4.5"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.3.0.BUILD-SNAPSHOT"
     }
+//    dependencies {
+//        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.3.2.RELEASE"
+//        //classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6"
+//        //classpath "org.codehaus.groovy:groovy-backports-compat23:2.4.5"
+//    }
     repositories {
         mavenCentral()
         maven {
@@ -31,14 +34,19 @@ apply plugin: "idea"
 apply plugin: "spring-boot"
 //apply plugin: "com.jfrog.bintray"
 
+springBoot {
+    executable = true
+}
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-version = '0.0.1'
-group   = 'com.codeaim'
+
+//group   = 'com.codeaim'
 
 jar {
     baseName = 'url-check-common'
+    version = '0.0.1'
 }
 
 dependencies {
