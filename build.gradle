@@ -30,6 +30,7 @@ buildscript {
 }
 
 apply plugin: "java"
+apply plugin: 'maven'
 apply plugin: "idea"
 apply plugin: "spring-boot"
 //apply plugin: "com.jfrog.bintray"
@@ -41,13 +42,9 @@ springBoot {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-
+archivesBaseName = 'url-check-common'
 group   = 'com.codeaim'
 version = '0.0.1'
-jar {
-    baseName = 'url-check-common'
-
-}
 
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-data-jpa"
