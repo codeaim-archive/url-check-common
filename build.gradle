@@ -36,7 +36,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 version = '0.0.1'
-group   = 'com.codeaim'
+//group   = 'com.codeaim'
 
 jar {
     baseName = 'url-check-common'
@@ -45,7 +45,6 @@ jar {
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-data-jpa"
     compile "com.h2database:h2"
-    compile 'org.codehaus.groovy:groovy-backports-compat23:2.4.5'
     testCompile "junit:junit"
 }
 
