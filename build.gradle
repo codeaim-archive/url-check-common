@@ -12,7 +12,7 @@ apply plugin: "idea"
 apply plugin: "spring-boot"
 
 version = '0.0.1'
-//group   = 'com.codeaim'
+group   = 'com.codeaim.world'
 
 jar {
     baseName = 'url-check-common'
