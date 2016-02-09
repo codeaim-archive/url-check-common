@@ -14,7 +14,7 @@ apply plugin: "idea"
 apply plugin: "spring-boot"
 apply plugin: 'com.jfrog.bintray'
 
-version = '0.0.2'
+version = '0.0.3'
 group   = 'com.codeaim'
 
 jar {
@@ -38,6 +38,7 @@ bintray {
     user = project.hasProperty('user') ? project.property('user') : System.getenv('BINTRAY_USER')
     key = project.hasProperty('key') ? project.property('key') : System.getenv('BINTRAY_KEY')
     configurations = ['archives']
+    publish = true
     pkg {
         repo = 'codeaim'
         name = 'url-check-common'
@@ -45,7 +46,7 @@ bintray {
         licenses = ['MIT']
         vcsUrl = 'https://github.com/codeaim/url-check-common.git'
         version {
-            name = project.version
+            name = project.name
             desc = 'url-check-common'
             vcsTag = project.version
             released  = new Date()
