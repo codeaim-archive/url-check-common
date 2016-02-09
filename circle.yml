@@ -6,8 +6,6 @@ dependencies:
   override:
     - chmod 777 ./gradlew
     - ./gradlew build
-    - gradle -version
-    - gradle build --debug --stacktrace
 
 test:
   override:
