@@ -9,10 +9,10 @@ dependencies:
 
 test:
   override:
-    - gradle test
+    - ./gradlew test
 
 deployment:
   production:
     branch: production
     commands:
-      - gradle bintrayUpload
+      - ./gradlew bintrayUpload
