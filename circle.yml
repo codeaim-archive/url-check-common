@@ -10,9 +10,5 @@ dependencies:
 test:
   override:
     - ./gradlew test
-
-deployment:
-  production:
-    branch: production
-    commands:
-      - ./gradlew bintrayUpload
+  post:
+    - ./gradlew bintrayUpload
