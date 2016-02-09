@@ -15,7 +15,7 @@ apply plugin: "spring-boot"
 apply plugin: 'com.jfrog.bintray'
 
 version = '0.0.1'
-group   = 'com.codeaim.world'
+group   = 'com.codeaim'
 
 jar {
     baseName = 'url-check-common'
