@@ -2,9 +2,18 @@ package com.codeaim.urlcheck.common.model;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.Version;
 
 @Entity
@@ -13,8 +22,11 @@ public final class Monitor
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-    private String userId;
-    private Long monitorEventId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User user;
+    @OneToOne(fetch = FetchType.LAZY)
+    private MonitorEvent monitorEvent;
     private String name;
     private String url;
     private State state;
@@ -31,8 +43,8 @@ public final class Monitor
 
     public Monitor(
         final Long id,
-        final String userId,
-        final Long monitorEventId,
+        final User user,
+        final MonitorEvent monitorEvent,
         final String name,
         final String url,
         final State state,
@@ -48,8 +60,8 @@ public final class Monitor
     )
     {
         this.id = id;
-        this.userId = userId;
-        this.monitorEventId = monitorEventId;
+        this.user = user;
+        this.monitorEvent = monitorEvent;
         this.name = name;
         this.url = url;
         this.state = state;
@@ -71,14 +83,14 @@ public final class Monitor
         return this.id;
     }
 
-    public String getUserId()
+    public User getUser()
     {
-        return this.userId;
+        return this.user;
     }
 
-    public Long getMonitorEventId()
+    public MonitorEvent getMonitorEvent()
     {
-        return this.monitorEventId;
+        return this.monitorEvent;
     }
 
     public String getName()
@@ -147,8 +159,8 @@ public final class Monitor
     {
         return builder()
             .id(monitor.getId())
-            .userId(monitor.getUserId())
-            .monitorEventId(monitor.getMonitorEventId())
+            .user(monitor.getUser())
+            .monitorEvent(monitor.getMonitorEvent())
             .name(monitor.getName())
             .url(monitor.getUrl())
             .state(monitor.getState())
@@ -167,8 +179,8 @@ public final class Monitor
     {
         return "Monitor{" +
                 "id='" + id + '\'' +
-                ", userId='" + userId + '\'' +
-                ", monitorEventId='" + monitorEventId + '\'' +
+                ", user='" + user + '\'' +
+                ", monitorEvent='" + monitorEvent + '\'' +
                 ", name='" + name + '\'' +
                 ", url='" + url + '\'' +
                 ", state=" + state +
@@ -187,8 +199,8 @@ public final class Monitor
     public static class Builder
     {
         private Long id;
-        private Long monitorEventId;
-        private String userId;
+        private MonitorEvent monitorEvent;
+        private User user;
         private String name;
         private String url;
         private State state;
@@ -200,6 +212,7 @@ public final class Monitor
         private int interval;
         private int version;
         private boolean confirming;
+        private Set<MonitorEvent> monitorEvents;
 
         private Builder id(final Long id)
         {
@@ -207,15 +220,15 @@ public final class Monitor
             return this;
         }
 
-        public Builder userId(final String userId)
+        public Builder user(final User user)
         {
-            this.userId = userId;
+            this.user = user;
             return this;
         }
 
-        public Builder monitorEventId(final Long monitorEventId)
+        public Builder monitorEvent(final MonitorEvent monitorEvent)
         {
-            this.monitorEventId = monitorEventId;
+            this.monitorEvent = monitorEvent;
             return this;
         }
 
@@ -289,8 +302,8 @@ public final class Monitor
         {
             return new Monitor(
                 this.id,
-                this.userId,
-                this.monitorEventId,
+                this.user,
+                this.monitorEvent,
                 this.name,
                 this.url,
                 this.state == null ? State.WAITING : this.state,
