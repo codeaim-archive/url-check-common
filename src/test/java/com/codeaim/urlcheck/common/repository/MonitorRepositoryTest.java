@@ -15,12 +15,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.codeaim.urlcheck.common.Application;
 import com.codeaim.urlcheck.common.model.Monitor;
+import com.codeaim.urlcheck.common.model.User;
 
 @RunWith(SpringJUnit4ClassRunner.class )
 @SpringApplicationConfiguration(Application.class)
 @Configuration
 public class MonitorRepositoryTest
 {
+    @Autowired
+    private UserRepository userRepository;
+
     @Autowired
     private MonitorRepository monitorRepository;
 
@@ -34,6 +38,14 @@ public class MonitorRepositoryTest
     public void findElectableMonitor() {
         Page<Monitor> saved = monitorRepository.findElectable("", false, LocalDateTime.now(ZoneOffset.UTC), null);
         Assert.assertNotNull(saved);
+    }
+
+    @Test
+    public void findByUserIdMonitors() {
+        User user = userRepository.save(User.builder().build());
+        monitorRepository.save(Monitor.builder().user(user).build());
+        Page<Monitor> monitors = monitorRepository.findByUserId(user.getId(), null);
+        Assert.assertEquals(user.getId(), monitors.getContent().get(0).getUser().getId());
     }
 
     @Test
@@ -53,5 +65,14 @@ public class MonitorRepositoryTest
     public void deleteMonitor() {
         Monitor saved = monitorRepository.save(Monitor.builder().build());
         monitorRepository.delete(saved);
+    }
+
+    @Test
+    public void deleteParentUserMonitor() {
+        User parent = userRepository.save(User.builder().build());
+        monitorRepository.save(Monitor.builder().user(parent).build());
+        userRepository.delete(parent);
+        List<Monitor> monitors = monitorRepository.findByUserId(parent.getId(), null).getContent();
+        Assert.assertTrue(monitors.isEmpty());
     }
 }

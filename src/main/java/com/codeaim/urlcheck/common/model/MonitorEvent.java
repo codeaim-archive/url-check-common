@@ -5,14 +5,20 @@ import java.time.ZoneOffset;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 public final class MonitorEvent
 {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-    private Long monitorId;
-    private Long previous;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Monitor monitor;
+    @OneToOne(fetch = FetchType.LAZY)
+    private MonitorEvent previous;
     private Status status;
     private String auditor;
     private int statusCode;
@@ -23,8 +29,8 @@ public final class MonitorEvent
 
     public MonitorEvent(
         final Long id,
-        final Long monitorId,
-        final Long previous,
+        final Monitor monitor,
+        final MonitorEvent previous,
         final Status status,
         final String auditor,
         final int statusCode,
@@ -35,7 +41,7 @@ public final class MonitorEvent
     )
     {
         this.id = id;
-        this.monitorId = monitorId;
+        this.monitor = monitor;
         this.previous = previous;
         this.status = status;
         this.auditor = auditor;
@@ -53,12 +59,12 @@ public final class MonitorEvent
         return this.id;
     }
 
-    public Long getMonitorId()
+    public Monitor getMonitor()
     {
-        return this.monitorId;
+        return this.monitor;
     }
 
-    public Long getPrevious()
+    public MonitorEvent getPrevious()
     {
         return this.previous;
     }
@@ -105,7 +111,7 @@ public final class MonitorEvent
     {
         return "MonitorEvent{" +
                 "id='" + id + '\'' +
-                ", monitorId='" + monitorId + '\'' +
+                ", monitor='" + monitor + '\'' +
                 ", previous='" + previous + '\'' +
                 ", status=" + status +
                 ", auditor='" + auditor + '\'' +
@@ -120,8 +126,8 @@ public final class MonitorEvent
     public static class Builder
     {
         private Long id;
-        private Long monitorId;
-        private Long previous;
+        private Monitor monitor;
+        private MonitorEvent previous;
         private Status status;
         private String auditor;
         private int statusCode;
@@ -129,13 +135,13 @@ public final class MonitorEvent
         private boolean changed;
         private boolean confirmation;
 
-        public Builder monitorId(final Long monitorId)
+        public Builder monitor(final Monitor monitor)
         {
-            this.monitorId = monitorId;
+            this.monitor = monitor;
             return this;
         }
 
-        public Builder previous(final Long previous)
+        public Builder previous(final MonitorEvent previous)
         {
             this.previous = previous;
             return this;
@@ -181,7 +187,7 @@ public final class MonitorEvent
         {
             return new MonitorEvent(
                 this.id,
-                this.monitorId,
+                this.monitor,
                 this.previous,
                 this.status,
                 this.auditor,

@@ -31,4 +31,6 @@ public interface MonitorRepository extends JpaRepository<Monitor, Long>
             @Param("currentDate") LocalDateTime currentDate,
             Pageable pageRequest
     );
+
+    Page<Monitor> findByUserId(Long userId, Pageable pageRequest);
 }

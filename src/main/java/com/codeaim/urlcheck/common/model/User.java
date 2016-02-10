@@ -16,7 +16,7 @@ public final class User
 {
     @javax.persistence.Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private String id;
+    private Long id;
     private String name;
     private String email;
     private String resetToken;
@@ -31,7 +31,7 @@ public final class User
     private Set<String> roles;
 
     public User(
-        final String id,
+        final Long id,
         final String name,
         final String email,
         final String resetToken,
@@ -59,7 +59,7 @@ public final class User
 
     protected User() {}
 
-    public String getId()
+    public Long getId()
     {
         return this.id;
     }
@@ -129,11 +129,30 @@ public final class User
             .version(user.getVersion() + 1)
             .emailVerified(user.isEmailVerified())
             .roles(user.getRoles());
+            //.monitors(user.getMonitors());
+    }
+
+    @Override
+    public String toString()
+    {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", resetToken='" + resetToken + '\'' +
+                ", accessToken='" + accessToken + '\'' +
+                ", password='" + password + '\'' +
+                ", updated=" + updated +
+                ", created=" + created +
+                ", version=" + version +
+                ", emailVerified=" + emailVerified +
+                ", roles=" + roles +
+                '}';
     }
 
     public static class Builder
     {
-        private String id;
+        private Long id;
         private String name;
         private String email;
         private String resetToken;
@@ -144,7 +163,7 @@ public final class User
         private boolean emailVerified;
         private Set<String> roles;
 
-        private Builder id(final String id)
+        private Builder id(final Long id)
         {
             this.id = id;
             return this;
