@@ -75,4 +75,25 @@ public class MonitorRepositoryTest
         List<Monitor> monitors = monitorRepository.findByUserId(parent.getId(), null).getContent();
         Assert.assertTrue(monitors.isEmpty());
     }
+
+    @Test
+    public void getUserNameMonitor()
+    {
+        String userName = "testUser";
+        User user = userRepository.save(User.builder().name("testUser").build());
+        Monitor saved = monitorRepository.save(Monitor.builder().user(user).build());
+        Monitor monitor = monitorRepository.findOne(saved.getId());
+        Assert.assertEquals(userName, monitor.getUser().getName());
+    }
+
+    @Test
+    public void getNewMonitorUserNameMonitor()
+    {
+        String userName = "testUser";
+        User user = userRepository.save(User.builder().name("testUser").build());
+        Monitor saved = monitorRepository.save(Monitor.builder().user(user).build());
+        Monitor monitor = monitorRepository.findOne(saved.getId());
+        Monitor newMonitor = Monitor.buildFrom(monitor).build();
+        Assert.assertEquals(userName, newMonitor.getUser().getName());
+    }
 }

@@ -1,6 +1,8 @@
 package com.codeaim.urlcheck.common.repository;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -52,5 +54,34 @@ public class UserRepositoryTest
     public void deleteUser() {
         User saved = userRepository.save(User.builder().build());
         userRepository.delete(saved);
+    }
+
+    @Test
+    public void getRolesUser()
+    {
+        Set<String> roles = new HashSet<>();
+        roles.add("admin");
+        roles.add("verified");
+        roles.add("registered");
+
+        User saved = userRepository.save(User.builder().roles(roles).build());
+        User user = userRepository.findOne(saved.getId());
+
+        Assert.assertEquals(roles, user.getRoles());
+    }
+
+    @Test
+    public void getNewUserRolesUser()
+    {
+        Set<String> roles = new HashSet<>();
+        roles.add("admin");
+        roles.add("verified");
+        roles.add("registered");
+
+        User saved = userRepository.save(User.builder().roles(roles).build());
+        User user = userRepository.findOne(saved.getId());
+        User newUser = User.buildFrom(user).build();
+
+        Assert.assertEquals(roles, newUser.getRoles());
     }
 }
