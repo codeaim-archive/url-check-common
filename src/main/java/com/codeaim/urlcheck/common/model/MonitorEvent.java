@@ -111,8 +111,8 @@ public final class MonitorEvent
     {
         return "MonitorEvent{" +
                 "id='" + id + '\'' +
-                ", monitor='" + monitor + '\'' +
-                ", previous='" + previous + '\'' +
+                ", monitor='" + monitor.getId() + '\'' +
+                ", previous='" + previous.getId() + '\'' +
                 ", status=" + status +
                 ", auditor='" + auditor + '\'' +
                 ", statusCode=" + statusCode +

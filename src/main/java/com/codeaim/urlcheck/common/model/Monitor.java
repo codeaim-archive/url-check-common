@@ -179,8 +179,8 @@ public final class Monitor
     {
         return "Monitor{" +
                 "id='" + id + '\'' +
-                ", user='" + user + '\'' +
-                ", monitorEvent='" + monitorEvent + '\'' +
+                ", user='" + user.getId() + '\'' +
+                ", monitorEvent='" + monitorEvent.getId() + '\'' +
                 ", name='" + name + '\'' +
                 ", url='" + url + '\'' +
                 ", state=" + state +
