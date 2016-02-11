@@ -109,18 +109,27 @@ public final class MonitorEvent
     @Override
     public String toString()
     {
-        return "MonitorEvent{" +
-                "id='" + id + '\'' +
-                ", monitor='" + monitor.getId() + '\'' +
-                ", previous='" + previous.getId() + '\'' +
-                ", status=" + status +
-                ", auditor='" + auditor + '\'' +
-                ", statusCode=" + statusCode +
-                ", responseTime=" + responseTime +
-                ", changed=" + changed +
-                ", confirmation=" + confirmation +
-                ", created=" + created +
-                '}';
+        return String.format("MonitorEvent{" +
+                        "id='%s'," +
+                        "monitor='%s'," +
+                        "previous='%s'," +
+                        "status='%s'," +
+                        "auditor='%s'," +
+                        "statusCode='%s'," +
+                        "responseTime='%s'," +
+                        "changed='%s'," +
+                        "confirmation='%s'," +
+                        "created='%s'}",
+                this.getId(),
+                this.getMonitor() != null ? this.getMonitor().getId() : "",
+                this.getPrevious() != null ? this.getPrevious().getPrevious() : "",
+                this.getStatus(),
+                this.getAuditor(),
+                this.getStatusCode(),
+                this.getResponseTime(),
+                this.isChanged(),
+                this.isConfirmation(),
+                this.getCreated());
     }
 
     public static class Builder

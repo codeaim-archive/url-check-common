@@ -20,7 +20,7 @@ import org.springframework.data.annotation.Version;
 public final class Monitor
 {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -42,21 +42,21 @@ public final class Monitor
     private int version;
 
     public Monitor(
-        final Long id,
-        final User user,
-        final MonitorEvent monitorEvent,
-        final String name,
-        final String url,
-        final State state,
-        final Status status,
-        final String auditor,
-        final LocalDateTime updated,
-        final LocalDateTime created,
-        final LocalDateTime audit,
-        final LocalDateTime locked,
-        final int interval,
-        final int version,
-        final boolean confirming
+            final Long id,
+            final User user,
+            final MonitorEvent monitorEvent,
+            final String name,
+            final String url,
+            final State state,
+            final Status status,
+            final String auditor,
+            final LocalDateTime updated,
+            final LocalDateTime created,
+            final LocalDateTime audit,
+            final LocalDateTime locked,
+            final int interval,
+            final int version,
+            final boolean confirming
     )
     {
         this.id = id;
@@ -76,7 +76,9 @@ public final class Monitor
         this.confirming = confirming;
     }
 
-    protected Monitor() {}
+    protected Monitor()
+    {
+    }
 
     public Long getId()
     {
@@ -153,47 +155,64 @@ public final class Monitor
         return this.confirming;
     }
 
-    public static Builder builder() { return new Builder(); }
+    public static Builder builder()
+    {
+        return new Builder();
+    }
 
     public static Builder buildFrom(Monitor monitor)
     {
         return builder()
-            .id(monitor.getId())
-            .user(monitor.getUser())
-            .monitorEvent(monitor.getMonitorEvent())
-            .name(monitor.getName())
-            .url(monitor.getUrl())
-            .state(monitor.getState())
-            .status(monitor.getStatus())
-            .auditor(monitor.getAuditor())
-            .created(monitor.getCreated())
-            .audit(monitor.getAudit())
-            .locked(monitor.getLocked())
-            .interval(monitor.getInterval())
-            .version(monitor.getVersion() + 1)
-            .confirming(monitor.isConfirming());
+                .id(monitor.getId())
+                .user(monitor.getUser())
+                .monitorEvent(monitor.getMonitorEvent())
+                .name(monitor.getName())
+                .url(monitor.getUrl())
+                .state(monitor.getState())
+                .status(monitor.getStatus())
+                .auditor(monitor.getAuditor())
+                .created(monitor.getCreated())
+                .audit(monitor.getAudit())
+                .locked(monitor.getLocked())
+                .interval(monitor.getInterval())
+                .version(monitor.getVersion() + 1)
+                .confirming(monitor.isConfirming());
     }
 
     @Override
     public String toString()
     {
-        return "Monitor{" +
-                "id='" + id + '\'' +
-                ", user='" + user.getId() + '\'' +
-                ", monitorEvent='" + monitorEvent.getId() + '\'' +
-                ", name='" + name + '\'' +
-                ", url='" + url + '\'' +
-                ", state=" + state +
-                ", status=" + status +
-                ", auditor='" + auditor + '\'' +
-                ", updated=" + updated +
-                ", created=" + created +
-                ", audit=" + audit +
-                ", locked=" + locked +
-                ", interval=" + interval +
-                ", confirming=" + confirming +
-                ", version=" + version +
-                '}';
+        return String.format("Monitor{" +
+                        "id='%s'," +
+                        "user='%s'," +
+                        "monitorEvent='%s'," +
+                        "name='%s'," +
+                        "url='%s'," +
+                        "state='%s'," +
+                        "status='%s'," +
+                        "auditor='%s'," +
+                        "updated='%s'," +
+                        "created='%s'," +
+                        "audit='%s'," +
+                        "locked='%s'," +
+                        "interval='%s'," +
+                        "confirming='%s'," +
+                        "version='%s'}",
+                this.getId(),
+                this.getUser() != null ? this.getUser().getId() : "",
+                this.getMonitorEvent() != null ? this.getMonitorEvent().getId() : "",
+                this.getName(),
+                this.getUrl(),
+                this.getState(),
+                this.getStatus(),
+                this.getAuditor(),
+                this.getUpdated(),
+                this.getCreated(),
+                this.getAudit(),
+                this.getLocked(),
+                this.getInterval(),
+                this.isConfirming(),
+                this.getVersion());
     }
 
     public static class Builder
@@ -301,21 +320,21 @@ public final class Monitor
         public Monitor build()
         {
             return new Monitor(
-                this.id,
-                this.user,
-                this.monitorEvent,
-                this.name,
-                this.url,
-                this.state == null ? State.WAITING : this.state,
-                this.status == null ? Status.UNKNOWN : this.status,
-                this.auditor,
-                LocalDateTime.now(ZoneOffset.UTC),
-                this.created == null ? LocalDateTime.now(ZoneOffset.UTC) : this.created,
-                this.audit == null ? LocalDateTime.now(ZoneOffset.UTC) : this.audit,
-                this.locked,
-                this.interval,
-                this.version <= 0 ? 1 : this.version,
-                this.confirming
+                    this.id,
+                    this.user,
+                    this.monitorEvent,
+                    this.name,
+                    this.url,
+                    this.state == null ? State.WAITING : this.state,
+                    this.status == null ? Status.UNKNOWN : this.status,
+                    this.auditor,
+                    LocalDateTime.now(ZoneOffset.UTC),
+                    this.created == null ? LocalDateTime.now(ZoneOffset.UTC) : this.created,
+                    this.audit == null ? LocalDateTime.now(ZoneOffset.UTC) : this.audit,
+                    this.locked,
+                    this.interval,
+                    this.version <= 0 ? 1 : this.version,
+                    this.confirming
             );
         }
     }

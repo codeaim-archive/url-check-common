@@ -136,19 +136,29 @@ public final class User
     @Override
     public String toString()
     {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", resetToken='" + resetToken + '\'' +
-                ", accessToken='" + accessToken + '\'' +
-                ", password='" + password + '\'' +
-                ", updated=" + updated +
-                ", created=" + created +
-                ", version=" + version +
-                ", emailVerified=" + emailVerified +
-                ", roles=" + roles +
-                '}';
+        return String.format("User{" +
+                        "id='%s'," +
+                        "name='%s'," +
+                        "email='%s'," +
+                        "resetToken='%s'," +
+                        "accessToken='%s'," +
+                        "password='%s'," +
+                        "updated='%s'," +
+                        "created='%s'," +
+                        "version='%s'," +
+                        "emailVerified='%s'," +
+                        "roles='%s'}",
+                this.getId(),
+                this.getName(),
+                this.getEmail(),
+                this.getResetToken(),
+                this.getAccessToken(),
+                this.getPassword(),
+                this.getUpdated(),
+                this.getCreated(),
+                this.getVersion(),
+                this.isEmailVerified(),
+                this.getRoles());
     }
 
     public static class Builder
