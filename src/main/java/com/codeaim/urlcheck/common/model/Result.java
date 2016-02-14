@@ -4,35 +4,40 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-public final class MonitorEvent
+public final class Result
 {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Monitor monitor;
+    private Check check;
     @OneToOne(fetch = FetchType.LAZY)
-    private MonitorEvent previous;
+    private Result previous;
+    @NotNull
     private Status status;
-    private String auditor;
+    @NotNull
+    private String probe;
     private int statusCode;
     private long responseTime;
     private boolean changed;
     private boolean confirmation;
+    @NotNull
     private LocalDateTime created;
 
-    public MonitorEvent(
+    public Result(
         final Long id,
-        final Monitor monitor,
-        final MonitorEvent previous,
+        final Check check,
+        final Result previous,
         final Status status,
-        final String auditor,
+        final String probe,
         final int statusCode,
         final long responseTime,
         final boolean changed,
@@ -41,10 +46,10 @@ public final class MonitorEvent
     )
     {
         this.id = id;
-        this.monitor = monitor;
+        this.check = check;
         this.previous = previous;
         this.status = status;
-        this.auditor = auditor;
+        this.probe = probe;
         this.statusCode = statusCode;
         this.responseTime = responseTime;
         this.changed = changed;
@@ -52,19 +57,19 @@ public final class MonitorEvent
         this.created = created;
     }
 
-    protected MonitorEvent() {}
+    protected Result() {}
 
     public Long getId()
     {
         return this.id;
     }
 
-    public Monitor getMonitor()
+    public Check getCheck()
     {
-        return this.monitor;
+        return this.check;
     }
 
-    public MonitorEvent getPrevious()
+    public Result getPrevious()
     {
         return this.previous;
     }
@@ -74,9 +79,9 @@ public final class MonitorEvent
         return this.status;
     }
 
-    public String getAuditor()
+    public String getProbe()
     {
-        return this.auditor;
+        return this.probe;
     }
 
     public int getStatusCode()
@@ -109,22 +114,22 @@ public final class MonitorEvent
     @Override
     public String toString()
     {
-        return String.format("MonitorEvent{" +
+        return String.format("Result{" +
                         "id='%s'," +
-                        "monitor='%s'," +
+                        "check='%s'," +
                         "previous='%s'," +
                         "status='%s'," +
-                        "auditor='%s'," +
+                        "probe='%s'," +
                         "statusCode='%s'," +
                         "responseTime='%s'," +
                         "changed='%s'," +
                         "confirmation='%s'," +
                         "created='%s'}",
                 this.getId(),
-                this.getMonitor() != null ? this.getMonitor().getId() : "",
+                this.getCheck() != null ? this.getCheck().getId() : "",
                 this.getPrevious() != null ? this.getPrevious().getPrevious() : "",
                 this.getStatus(),
-                this.getAuditor(),
+                this.getProbe(),
                 this.getStatusCode(),
                 this.getResponseTime(),
                 this.isChanged(),
@@ -135,22 +140,22 @@ public final class MonitorEvent
     public static class Builder
     {
         private Long id;
-        private Monitor monitor;
-        private MonitorEvent previous;
+        private Check check;
+        private Result previous;
         private Status status;
-        private String auditor;
+        private String probe;
         private int statusCode;
         private long responseTime;
         private boolean changed;
         private boolean confirmation;
 
-        public Builder monitor(final Monitor monitor)
+        public Builder check(final Check check)
         {
-            this.monitor = monitor;
+            this.check = check;
             return this;
         }
 
-        public Builder previous(final MonitorEvent previous)
+        public Builder previous(final Result previous)
         {
             this.previous = previous;
             return this;
@@ -162,9 +167,9 @@ public final class MonitorEvent
             return this;
         }
 
-        public Builder auditor(final String auditor)
+        public Builder probe(final String probe)
         {
-            this.auditor = auditor;
+            this.probe = probe;
             return this;
         }
 
@@ -192,14 +197,14 @@ public final class MonitorEvent
             return this;
         }
 
-        public MonitorEvent build()
+        public Result build()
         {
-            return new MonitorEvent(
+            return new Result(
                 this.id,
-                this.monitor,
+                this.check,
                 this.previous,
                 this.status,
-                this.auditor,
+                this.probe,
                 this.statusCode,
                 this.responseTime,
                 this.changed,

@@ -2,7 +2,6 @@ package com.codeaim.urlcheck.common.model;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,48 +10,63 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.validator.constraints.URL;
 import org.springframework.data.annotation.Version;
 
 @Entity
-public final class Monitor
+public final class Check
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
     @OneToOne(fetch = FetchType.LAZY)
-    private MonitorEvent monitorEvent;
+    private Result latestResult;
+    @NotNull
     private String name;
+    @NotNull
+    @URL
     private String url;
+    @NotNull
     private State state;
+    @NotNull
     private Status status;
-    private String auditor;
+    private String probe;
+    @NotNull
     private LocalDateTime updated;
+    @NotNull
     private LocalDateTime created;
-    private LocalDateTime audit;
+    @NotNull
+    private LocalDateTime refresh;
     private LocalDateTime locked;
+    @Min(1)
+    @Max(60)
     private int interval;
     private boolean confirming;
     @Version
     private int version;
 
-    public Monitor(
+    public Check(
             final Long id,
             final User user,
-            final MonitorEvent monitorEvent,
+            final Result latestResult,
             final String name,
             final String url,
             final State state,
             final Status status,
-            final String auditor,
+            final String probe,
             final LocalDateTime updated,
             final LocalDateTime created,
-            final LocalDateTime audit,
+            final LocalDateTime refresh,
             final LocalDateTime locked,
             final int interval,
             final int version,
@@ -61,22 +75,22 @@ public final class Monitor
     {
         this.id = id;
         this.user = user;
-        this.monitorEvent = monitorEvent;
+        this.latestResult = latestResult;
         this.name = name;
         this.url = url;
         this.state = state;
         this.status = status;
-        this.auditor = auditor;
+        this.probe = probe;
         this.updated = updated;
         this.created = created;
-        this.audit = audit;
+        this.refresh = refresh;
         this.locked = locked;
         this.interval = interval;
         this.version = version;
         this.confirming = confirming;
     }
 
-    protected Monitor()
+    protected Check()
     {
     }
 
@@ -90,9 +104,9 @@ public final class Monitor
         return this.user;
     }
 
-    public MonitorEvent getMonitorEvent()
+    public Result getLatestResult()
     {
-        return this.monitorEvent;
+        return this.latestResult;
     }
 
     public String getName()
@@ -115,9 +129,9 @@ public final class Monitor
         return this.status;
     }
 
-    public String getAuditor()
+    public String getProbe()
     {
-        return this.auditor;
+        return this.probe;
     }
 
     public LocalDateTime getUpdated()
@@ -130,9 +144,9 @@ public final class Monitor
         return this.created;
     }
 
-    public LocalDateTime getAudit()
+    public LocalDateTime getRefresh()
     {
-        return this.audit;
+        return this.refresh;
     }
 
     public LocalDateTime getLocked()
@@ -160,55 +174,55 @@ public final class Monitor
         return new Builder();
     }
 
-    public static Builder buildFrom(Monitor monitor)
+    public static Builder buildFrom(Check check)
     {
         return builder()
-                .id(monitor.getId())
-                .user(monitor.getUser())
-                .monitorEvent(monitor.getMonitorEvent())
-                .name(monitor.getName())
-                .url(monitor.getUrl())
-                .state(monitor.getState())
-                .status(monitor.getStatus())
-                .auditor(monitor.getAuditor())
-                .created(monitor.getCreated())
-                .audit(monitor.getAudit())
-                .locked(monitor.getLocked())
-                .interval(monitor.getInterval())
-                .version(monitor.getVersion() + 1)
-                .confirming(monitor.isConfirming());
+                .id(check.getId())
+                .user(check.getUser())
+                .latestResult(check.getLatestResult())
+                .name(check.getName())
+                .url(check.getUrl())
+                .state(check.getState())
+                .status(check.getStatus())
+                .probe(check.getProbe())
+                .created(check.getCreated())
+                .refresh(check.getRefresh())
+                .locked(check.getLocked())
+                .interval(check.getInterval())
+                .version(check.getVersion() + 1)
+                .confirming(check.isConfirming());
     }
 
     @Override
     public String toString()
     {
-        return String.format("Monitor{" +
+        return String.format("Check{" +
                         "id='%s'," +
                         "user='%s'," +
-                        "monitorEvent='%s'," +
+                        "latestResult='%s'," +
                         "name='%s'," +
                         "url='%s'," +
                         "state='%s'," +
                         "status='%s'," +
-                        "auditor='%s'," +
+                        "probe='%s'," +
                         "updated='%s'," +
                         "created='%s'," +
-                        "audit='%s'," +
+                        "refresh='%s'," +
                         "locked='%s'," +
                         "interval='%s'," +
                         "confirming='%s'," +
                         "version='%s'}",
                 this.getId(),
                 this.getUser() != null ? this.getUser().getId() : "",
-                this.getMonitorEvent() != null ? this.getMonitorEvent().getId() : "",
+                this.getLatestResult() != null ? this.getLatestResult().getId() : "",
                 this.getName(),
                 this.getUrl(),
                 this.getState(),
                 this.getStatus(),
-                this.getAuditor(),
+                this.getProbe(),
                 this.getUpdated(),
                 this.getCreated(),
-                this.getAudit(),
+                this.getRefresh(),
                 this.getLocked(),
                 this.getInterval(),
                 this.isConfirming(),
@@ -218,20 +232,19 @@ public final class Monitor
     public static class Builder
     {
         private Long id;
-        private MonitorEvent monitorEvent;
+        private Result latestResult;
         private User user;
         private String name;
         private String url;
         private State state;
         private Status status;
-        private String auditor;
+        private String probe;
         private LocalDateTime created;
-        private LocalDateTime audit;
+        private LocalDateTime refresh;
         private LocalDateTime locked;
         private int interval;
         private int version;
         private boolean confirming;
-        private Set<MonitorEvent> monitorEvents;
 
         private Builder id(final Long id)
         {
@@ -245,9 +258,9 @@ public final class Monitor
             return this;
         }
 
-        public Builder monitorEvent(final MonitorEvent monitorEvent)
+        public Builder latestResult(final Result latestResult)
         {
-            this.monitorEvent = monitorEvent;
+            this.latestResult = latestResult;
             return this;
         }
 
@@ -275,9 +288,9 @@ public final class Monitor
             return this;
         }
 
-        public Builder auditor(final String auditor)
+        public Builder probe(final String probe)
         {
-            this.auditor = auditor;
+            this.probe = probe;
             return this;
         }
 
@@ -287,9 +300,9 @@ public final class Monitor
             return this;
         }
 
-        public Builder audit(final LocalDateTime audit)
+        public Builder refresh(final LocalDateTime refresh)
         {
-            this.audit = audit;
+            this.refresh = refresh;
             return this;
         }
 
@@ -317,21 +330,21 @@ public final class Monitor
             return this;
         }
 
-        public Monitor build()
+        public Check build()
         {
-            return new Monitor(
+            return new Check(
                     this.id,
                     this.user,
-                    this.monitorEvent,
+                    this.latestResult,
                     this.name,
                     this.url,
                     this.state == null ? State.WAITING : this.state,
                     this.status == null ? Status.UNKNOWN : this.status,
-                    this.auditor,
+                    this.probe,
                     LocalDateTime.now(ZoneOffset.UTC),
                     this.created == null ? LocalDateTime.now(ZoneOffset.UTC) : this.created,
-                    this.audit == null ? LocalDateTime.now(ZoneOffset.UTC) : this.audit,
-                    this.locked,
+                    this.refresh == null ? LocalDateTime.now(ZoneOffset.UTC) : this.refresh,
+                    this.locked == null ? LocalDateTime.now(ZoneOffset.UTC) : this.locked,
                     this.interval,
                     this.version <= 0 ? 1 : this.version,
                     this.confirming

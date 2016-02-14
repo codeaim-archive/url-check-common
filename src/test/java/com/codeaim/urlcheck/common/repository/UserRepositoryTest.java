@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.collect.Sets;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,56 +33,100 @@ public class UserRepositoryTest
     @Test
     public void findByEmailUser() {
         String email = "test@test.com";
-        userRepository.save(User.builder().email(email).build());
+        userRepository.save(User.builder()
+                .accessToken("testAccessToken")
+                .email(email)
+                .name("testUser")
+                .password("testPassword")
+                .resetToken("testResetToken")
+                .roles(Sets.newHashSet("admin", "verified", "registered"))
+                .build());
         User user = userRepository.findByEmail(email);
         Assert.assertEquals(email, user.getEmail());
+        userRepository.delete(user);
     }
 
     @Test
     public void createUser() {
-        User saved = userRepository.save(User.builder().build());
+        User saved = userRepository.save(User.builder()
+                .accessToken("testAccessToken")
+                .email("test@test.com")
+                .name("testUser")
+                .password("testPassword")
+                .resetToken("testResetToken")
+                .roles(Sets.newHashSet("admin", "verified", "registered"))
+                .build());
+
         Assert.assertNotNull(saved);
+        userRepository.delete(saved);
     }
 
     @Test
     public void updateUser() {
-        User saved = userRepository.save(User.builder().build());
+        User saved = userRepository.save(User.builder()
+                .accessToken("testAccessToken")
+                .email("test@test.com")
+                .name("testUser")
+                .password("testPassword")
+                .resetToken("testResetToken")
+                .roles(Sets.newHashSet("admin", "verified", "registered"))
+                .build());
+
         User updated = userRepository.save(User.buildFrom(saved).build());
         Assert.assertEquals(2, updated.getVersion());
+        userRepository.delete(saved);
     }
 
     @Test
     public void deleteUser() {
-        User saved = userRepository.save(User.builder().build());
+        User saved = userRepository.save(User.builder()
+                .accessToken("testAccessToken")
+                .email("test@test.com")
+                .name("testUser")
+                .password("testPassword")
+                .resetToken("testResetToken")
+                .roles(Sets.newHashSet("admin", "verified", "registered"))
+                .build());
+
         userRepository.delete(saved);
     }
 
     @Test
     public void getRolesUser()
     {
-        Set<String> roles = new HashSet<>();
-        roles.add("admin");
-        roles.add("verified");
-        roles.add("registered");
+        Set<String> roles = Sets.newHashSet("admin", "verified", "registered");
 
-        User saved = userRepository.save(User.builder().roles(roles).build());
+        User saved = userRepository.save(User.builder()
+                .accessToken("testAccessToken")
+                .email("test@test.com")
+                .name("testUser")
+                .password("testPassword")
+                .resetToken("testResetToken")
+                .roles(roles)
+                .build());
+
         User user = userRepository.findOne(saved.getId());
-
         Assert.assertEquals(roles, user.getRoles());
+        userRepository.delete(saved);
     }
 
     @Test
     public void getNewUserRolesUser()
     {
-        Set<String> roles = new HashSet<>();
-        roles.add("admin");
-        roles.add("verified");
-        roles.add("registered");
+        Set<String> roles = Sets.newHashSet("admin", "verified", "registered");
 
-        User saved = userRepository.save(User.builder().roles(roles).build());
+        User saved = userRepository.save(User.builder()
+                .accessToken("testAccessToken")
+                .email("test@test.com")
+                .name("testUser")
+                .password("testPassword")
+                .resetToken("testResetToken")
+                .roles(roles)
+                .build());
+
         User user = userRepository.findOne(saved.getId());
         User newUser = User.buildFrom(user).build();
-
         Assert.assertEquals(roles, newUser.getRoles());
+        userRepository.delete(saved);
     }
 }

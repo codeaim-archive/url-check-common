@@ -4,12 +4,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Set;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Email;
 import org.springframework.data.annotation.Version;
 
 @Entity
@@ -18,16 +16,26 @@ public final class User
     @javax.persistence.Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
+    @NotNull
     private String name;
+    @NotNull
+    @Email
+    @Column(unique = true)
     private String email;
+    @NotNull
     private String resetToken;
+    @NotNull
     private String accessToken;
+    @NotNull
     private String password;
+    @NotNull
     private LocalDateTime updated;
+    @NotNull
     private LocalDateTime created;
     @Version
     private int version;
     private boolean emailVerified;
+    @NotNull
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> roles;
 
@@ -130,7 +138,6 @@ public final class User
             .version(user.getVersion() + 1)
             .emailVerified(user.isEmailVerified())
             .roles(user.getRoles());
-            //.monitors(user.getMonitors());
     }
 
     @Override
