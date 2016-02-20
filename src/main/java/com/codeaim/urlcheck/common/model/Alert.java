@@ -17,6 +17,9 @@ public class Alert
     private Long id;
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Check check;
     @NotNull
@@ -36,6 +39,7 @@ public class Alert
 
     public Alert(
             final Long id,
+            final User user,
             final Check check,
             final Contact contact,
             final Result result,
@@ -46,6 +50,7 @@ public class Alert
     )
     {
         this.id = id;
+        this.user = user;
         this.check = check;
         this.contact = contact;
         this.result = result;
@@ -59,6 +64,8 @@ public class Alert
     {
         return id;
     }
+
+    public User getUser() { return user; }
 
     public Check getCheck()
     {
@@ -104,6 +111,7 @@ public class Alert
     {
         return builder()
                 .id(alert.getId())
+                .user(alert.getUser())
                 .check(alert.getCheck())
                 .contact(alert.getContact())
                 .result(alert.getResult())
@@ -117,6 +125,7 @@ public class Alert
     {
         return String.format("Alert{" +
                         "id='%s'," +
+                        "user='%s'," +
                         "check='%s'," +
                         "contact='%s'," +
                         "result='%s'," +
@@ -125,6 +134,7 @@ public class Alert
                         "updated='%s'," +
                         "version='%s'}",
                 this.getId(),
+                this.getUser(),
                 this.getCheck() != null ? this.getCheck().getId() : "",
                 this.getContact() != null ? this.getContact().getId() : "",
                 this.getResult() != null ? this.getResult().getId() : "",
@@ -137,6 +147,7 @@ public class Alert
     public static class Builder
     {
         private Long id;
+        private User user;
         private Check check;
         private Contact contact;
         private Result result;
@@ -147,6 +158,12 @@ public class Alert
         private Builder id(final Long id)
         {
             this.id = id;
+            return this;
+        }
+
+        public Builder user(final User user)
+        {
+            this.user = user;
             return this;
         }
 
@@ -190,6 +207,7 @@ public class Alert
         {
             return new Alert(
                     this.id,
+                    this.user,
                     this.check,
                     this.contact,
                     this.result,
