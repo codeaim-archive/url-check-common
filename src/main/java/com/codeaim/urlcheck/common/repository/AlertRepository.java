@@ -15,6 +15,8 @@ import java.util.List;
 @Repository
 public interface AlertRepository extends JpaRepository<Alert, Long>
 {
-    Page<Result> findByCheckId(Long checkId, Pageable pageRequest);
+    Page<Alert> findByUserId(Long userId, Pageable pageRequest);
+
+    Page<Alert> findByCheckId(Long checkId, Pageable pageRequest);
 }
 
