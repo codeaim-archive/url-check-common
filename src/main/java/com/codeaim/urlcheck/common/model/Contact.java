@@ -18,6 +18,8 @@ public class Contact
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Check check;
     @NotNull
+    private String name;
+    @NotNull
     private LocalDateTime created;
     @NotNull
     private LocalDateTime updated;
@@ -27,6 +29,7 @@ public class Contact
     public Contact(
             final Long id,
             final Check check,
+            final String name,
             final LocalDateTime created,
             final LocalDateTime updated,
             final int version
@@ -34,6 +37,7 @@ public class Contact
     {
         this.id = id;
         this.check = check;
+        this.name = name;
         this.created = created;
         this.updated = updated;
         this.version = version;
@@ -49,10 +53,16 @@ public class Contact
         return check;
     }
 
+    public String getName()
+    {
+        return name;
+    }
+
     public LocalDateTime getCreated()
     {
         return created;
     }
+
     public LocalDateTime getUpdated()
     {
         return updated;
