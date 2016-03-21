@@ -14,7 +14,7 @@ apply plugin: "idea"
 apply plugin: "spring-boot"
 apply plugin: 'com.jfrog.bintray'
 
-version = '0.0.13'
+version = '0.0.14'
 group   = 'com.codeaim'
 
 jar {
