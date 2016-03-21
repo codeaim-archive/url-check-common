@@ -66,7 +66,9 @@ public final class User
         this.roles = roles;
     }
 
-    protected User() {}
+    protected User()
+    {
+    }
 
     public Long getId()
     {

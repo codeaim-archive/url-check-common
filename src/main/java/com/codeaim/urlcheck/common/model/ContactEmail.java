@@ -28,6 +28,10 @@ public class ContactEmail extends Contact
         this.email = email;
     }
 
+    protected ContactEmail()
+    {
+    }
+
     public String getEmail()
     {
         return email;

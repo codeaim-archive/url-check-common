@@ -60,6 +60,10 @@ public class Alert
         this.version = version;
     }
 
+    protected Alert()
+    {
+    }
+
     public Long getId()
     {
         return id;

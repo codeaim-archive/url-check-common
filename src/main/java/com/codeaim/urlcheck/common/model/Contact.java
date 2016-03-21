@@ -43,6 +43,10 @@ public class Contact
         this.version = version;
     }
 
+    protected Contact()
+    {
+    }
+
     public Long getId()
     {
         return id;

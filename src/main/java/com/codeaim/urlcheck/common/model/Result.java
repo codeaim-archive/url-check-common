@@ -57,7 +57,9 @@ public final class Result
         this.created = created;
     }
 
-    protected Result() {}
+    protected Result()
+    {
+    }
 
     public Long getId()
     {
