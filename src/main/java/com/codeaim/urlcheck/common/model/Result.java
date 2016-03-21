@@ -127,7 +127,7 @@ public final class Result
                         "created='%s'}",
                 this.getId(),
                 this.getCheck() != null ? this.getCheck().getId() : "",
-                this.getPrevious() != null ? this.getPrevious().getPrevious() : "",
+                this.getPrevious() != null ? this.getPrevious().getId() : "",
                 this.getStatus(),
                 this.getProbe(),
                 this.getStatusCode(),
