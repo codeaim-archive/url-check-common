@@ -1,19 +1,19 @@
 package com.codeaim.urlcheck.common.model;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.Set;
+import org.hibernate.validator.constraints.Email;
+import org.springframework.data.annotation.Version;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Email;
-import org.springframework.data.annotation.Version;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public final class User
 {
-    @javax.persistence.Id
+    @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     @NotNull
@@ -36,8 +36,8 @@ public final class User
     private int version;
     private boolean emailVerified;
     @NotNull
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> roles;
+    @ManyToMany
+    private Set<Role> roles;
 
     public User(
         final Long id,
@@ -50,7 +50,7 @@ public final class User
         final LocalDateTime created,
         final int version,
         final boolean emailVerified,
-        final Set<String> roles
+        final Set<Role> roles
     )
     {
         this.id = id;
@@ -120,7 +120,7 @@ public final class User
         return this.emailVerified;
     }
 
-    public Set<String> getRoles()
+    public Set<Role> getRoles()
     {
         return this.roles;
     }
@@ -167,7 +167,10 @@ public final class User
                 this.getCreated(),
                 this.getVersion(),
                 this.isEmailVerified(),
-                this.getRoles());
+                this.getRoles() != null ? this.getRoles()
+                        .stream()
+                        .map(Role::getName)
+                        .collect(Collectors.joining(", ")) : "");
     }
 
     public static class Builder
@@ -181,7 +184,7 @@ public final class User
         private LocalDateTime created;
         private int version;
         private boolean emailVerified;
-        private Set<String> roles;
+        private Set<Role> roles;
 
         private Builder id(final Long id)
         {
@@ -237,7 +240,7 @@ public final class User
             return this;
         }
 
-        public Builder roles(final Set<String> roles)
+        public Builder roles(final Set<Role> roles)
         {
             this.roles = roles;
             return this;

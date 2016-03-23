@@ -1,12 +1,11 @@
 package com.codeaim.urlcheck.common.model;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-
+import com.google.common.collect.Sets;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.google.common.collect.Sets;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 public class UserTest
 {
@@ -38,7 +37,10 @@ public class UserTest
                 .name("testUser")
                 .password("testPassword")
                 .resetToken("testResetToken")
-                .roles(Sets.newHashSet("admin", "verified", "registered"))
+                .roles(Sets.newHashSet(Sets.newHashSet(
+                        Role.builder().name("admin").build(),
+                        Role.builder().name("verified").build(),
+                        Role.builder().name("registered").build())))
                 .build()
                 .toString());
     }

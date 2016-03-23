@@ -1,9 +1,6 @@
 package com.codeaim.urlcheck.common.repository;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.List;
-
+import com.codeaim.urlcheck.common.Application;
 import com.codeaim.urlcheck.common.model.*;
 import com.google.common.collect.Sets;
 import org.junit.Assert;
@@ -15,13 +12,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.codeaim.urlcheck.common.Application;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.List;
+import java.util.Set;
 
 @RunWith(SpringJUnit4ClassRunner.class )
 @SpringApplicationConfiguration(Application.class)
 @Configuration
 public class ResultRepositoryTest
 {
+    @Autowired
+    private RoleRepository roleRepository;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -45,6 +48,10 @@ public class ResultRepositoryTest
 
     @Test
     public void findByCheckId() {
+        Set<Role> roles = Sets.newHashSet(roleRepository.save(Sets.newHashSet(
+                Role.builder().name("admin").build(),
+                Role.builder().name("verified").build(),
+                Role.builder().name("registered").build())));
 
         User parent = userRepository.save(User.builder()
             .accessToken("testAccessToken")
@@ -52,7 +59,7 @@ public class ResultRepositoryTest
             .name("testUser")
             .password("testPassword")
             .resetToken("testResetToken")
-            .roles(Sets.newHashSet("admin", "verified", "registered"))
+            .roles(roles)
             .build());
 
         Check parentCheck = checkRepository.save(Check.builder()
@@ -82,13 +89,18 @@ public class ResultRepositoryTest
 
     @Test
     public void create() {
+        Set<Role> roles = Sets.newHashSet(roleRepository.save(Sets.newHashSet(
+                Role.builder().name("admin").build(),
+                Role.builder().name("verified").build(),
+                Role.builder().name("registered").build())));
+
         User parent = userRepository.save(User.builder()
                 .accessToken("testAccessToken")
                 .email("test@test.com")
                 .name("testUser")
                 .password("testPassword")
                 .resetToken("testResetToken")
-                .roles(Sets.newHashSet("admin", "verified", "registered"))
+                .roles(roles)
                 .build());
 
         Check parentCheck = checkRepository.save(Check.builder()
@@ -117,13 +129,18 @@ public class ResultRepositoryTest
 
     @Test
     public void delete() {
+        Set<Role> roles = Sets.newHashSet(roleRepository.save(Sets.newHashSet(
+                Role.builder().name("admin").build(),
+                Role.builder().name("verified").build(),
+                Role.builder().name("registered").build())));
+
         User parent = userRepository.save(User.builder()
                 .accessToken("testAccessToken")
                 .email("test@test.com")
                 .name("testUser")
                 .password("testPassword")
                 .resetToken("testResetToken")
-                .roles(Sets.newHashSet("admin", "verified", "registered"))
+                .roles(roles)
                 .build());
 
         Check parentCheck = checkRepository.save(Check.builder()
@@ -152,13 +169,18 @@ public class ResultRepositoryTest
 
     @Test
     public void deleteParentCheck() {
+        Set<Role> roles = Sets.newHashSet(roleRepository.save(Sets.newHashSet(
+                Role.builder().name("admin").build(),
+                Role.builder().name("verified").build(),
+                Role.builder().name("registered").build())));
+
         User parent = userRepository.save(User.builder()
                 .accessToken("testAccessToken")
                 .email("test@test.com")
                 .name("testUser")
                 .password("testPassword")
                 .resetToken("testResetToken")
-                .roles(Sets.newHashSet("admin", "verified", "registered"))
+                .roles(roles)
                 .build());
 
         Check parentCheck = checkRepository.save(Check.builder()
