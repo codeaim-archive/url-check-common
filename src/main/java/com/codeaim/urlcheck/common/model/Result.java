@@ -1,19 +1,19 @@
 package com.codeaim.urlcheck.common.model;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.data.annotation.Version;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Entity
 public final class Result
 {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,18 +31,24 @@ public final class Result
     private boolean confirmation;
     @NotNull
     private LocalDateTime created;
+    @NotNull
+    private LocalDateTime updated;
+    @Version
+    private int version;
 
     public Result(
-        final Long id,
-        final Check check,
-        final Result previous,
-        final Status status,
-        final String probe,
-        final int statusCode,
-        final long responseTime,
-        final boolean changed,
-        final boolean confirmation,
-        final LocalDateTime created
+            final Long id,
+            final Check check,
+            final Result previous,
+            final Status status,
+            final String probe,
+            final int statusCode,
+            final long responseTime,
+            final boolean changed,
+            final boolean confirmation,
+            final LocalDateTime created,
+            final LocalDateTime updated,
+            final int version
     )
     {
         this.id = id;
@@ -55,6 +61,8 @@ public final class Result
         this.changed = changed;
         this.confirmation = confirmation;
         this.created = created;
+        this.updated = updated;
+        this.version = version;
     }
 
     protected Result()
@@ -111,7 +119,36 @@ public final class Result
         return this.created;
     }
 
-    public static Builder builder() { return new Builder(); }
+    public LocalDateTime getUpdated()
+    {
+        return this.updated;
+    }
+
+    public int getVersion()
+    {
+        return version;
+    }
+
+    public static Builder builder()
+    {
+        return new Builder();
+    }
+
+    public static Builder buildFrom(Result result)
+    {
+        return builder()
+                .id(result.getId())
+                .check(result.getCheck())
+                .previous(result.getPrevious())
+                .status(result.getStatus())
+                .probe(result.getProbe())
+                .statusCode(result.getStatusCode())
+                .responseTime(result.getResponseTime())
+                .changed(result.isChanged())
+                .confirmation(result.isConfirmation())
+                .created(result.getCreated())
+                .version(result.getVersion() + 1);
+    }
 
     @Override
     public String toString()
@@ -126,7 +163,9 @@ public final class Result
                         "responseTime='%s'," +
                         "changed='%s'," +
                         "confirmation='%s'," +
-                        "created='%s'}",
+                        "created='%s'," +
+                        "updated='%s'," +
+                        "version='%s'}",
                 this.getId(),
                 this.getCheck() != null ? this.getCheck().getId() : "",
                 this.getPrevious() != null ? this.getPrevious().getId() : "",
@@ -136,7 +175,9 @@ public final class Result
                 this.getResponseTime(),
                 this.isChanged(),
                 this.isConfirmation(),
-                this.getCreated());
+                this.getCreated(),
+                this.getUpdated(),
+                this.getVersion());
     }
 
     public static class Builder
@@ -150,6 +191,14 @@ public final class Result
         private long responseTime;
         private boolean changed;
         private boolean confirmation;
+        private LocalDateTime created;
+        private int version;
+
+        private Builder id(final Long id)
+        {
+            this.id = id;
+            return this;
+        }
 
         public Builder check(final Check check)
         {
@@ -199,19 +248,33 @@ public final class Result
             return this;
         }
 
+        public Builder created(final LocalDateTime created)
+        {
+            this.created = created;
+            return this;
+        }
+
+        public Builder version(final int version)
+        {
+            this.version = version;
+            return this;
+        }
+
         public Result build()
         {
             return new Result(
-                this.id,
-                this.check,
-                this.previous,
-                this.status,
-                this.probe,
-                this.statusCode,
-                this.responseTime,
-                this.changed,
-                this.confirmation,
-                LocalDateTime.now(ZoneOffset.UTC)
+                    this.id,
+                    this.check,
+                    this.previous,
+                    this.status,
+                    this.probe,
+                    this.statusCode,
+                    this.responseTime,
+                    this.changed,
+                    this.confirmation,
+                    this.created == null ? LocalDateTime.now(ZoneOffset.UTC) : this.created,
+                    LocalDateTime.now(ZoneOffset.UTC),
+                    this.version <= 0 ? 1 : this.version
             );
         }
     }
