@@ -2,6 +2,7 @@ package com.codeaim.urlcheck.common.repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import com.codeaim.urlcheck.common.model.Result;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,6 @@ public interface ResultRepository extends JpaRepository<Result, Long>
 
     Page<Result> findByCheckId(Long checkId, Pageable pageRequest);
 
-    Result findByPrevious(Result result);
+    Optional<Result> findByPrevious(Result result);
 }
 
