@@ -14,7 +14,6 @@ import org.hibernate.validator.constraints.URL;
 import org.springframework.data.annotation.Version;
 
 @Entity
-@Table(name="\"check\"")
 public final class Check
 {
     @Id
@@ -24,7 +23,7 @@ public final class Check
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     private Result latestResult;
     @NotNull
     private String name;
