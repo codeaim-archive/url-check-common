@@ -134,7 +134,7 @@ public class ResultRepositoryTest
                 .statusCode(200)
                 .build());
 
-        Result foundResult = resultRepository.findByPrevious(previousResult).get(0);
+        Result foundResult = resultRepository.findByPrevious(previousResult.getId()).get(0);
         Assert.assertEquals(result.getId(), foundResult.getId());
         userRepository.delete(parent);
     }

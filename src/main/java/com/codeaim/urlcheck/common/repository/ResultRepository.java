@@ -25,8 +25,22 @@ public interface ResultRepository extends JpaRepository<Result, Long>
             @Param("expiryDate") LocalDateTime expiryDate
     );
 
-    Page<Result> findByCheckId(Long checkId, Pageable pageRequest);
+    @Query(
+            value =
+            "SELECT r " +
+            "FROM Result r " +
+            "   LEFT JOIN FETCH r.check " +
+            "   LEFT JOIN FETCH r.previous " +
+            "WHERE r.previous.id = :resultId",
+            countQuery =
+            "SELECT r " +
+            "FROM Result r " +
+            "WHERE r.previous.id = :resultId"
+    )
+    List<Result> findByPrevious(
+            @Param("resultId") Long resultId
+    );
 
-    List<Result> findByPrevious(Result result);
+    Page<Result> findByCheckId(Long checkId, Pageable pageRequest);
 }
 
