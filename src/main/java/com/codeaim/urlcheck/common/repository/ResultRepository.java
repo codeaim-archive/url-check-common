@@ -27,6 +27,6 @@ public interface ResultRepository extends JpaRepository<Result, Long>
 
     Page<Result> findByCheckId(Long checkId, Pageable pageRequest);
 
-    Optional<Result> findByPrevious(Result result);
+    List<Result> findByPrevious(Result result);
 }
 
