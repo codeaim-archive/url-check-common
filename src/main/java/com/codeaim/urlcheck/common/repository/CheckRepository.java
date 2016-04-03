@@ -13,7 +13,22 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CheckRepository extends JpaRepository<Check, Long>
 {
-    @Query(" SELECT c " +
+    @Query(
+            value =
+            "SELECT c " +
+            "FROM Check c " +
+            "   LEFT JOIN FETCH c.user " +
+            "   LEFT JOIN FETCH c.latestResult " +
+            "WHERE ((c.state = com.codeaim.urlcheck.common.model.State.WAITING " +
+            "           AND c.refresh <= :currentDate) " +
+            "       OR (c.state = com.codeaim.urlcheck.common.model.State.ELECTED " +
+            "           AND c.locked <= :currentDate)) " +
+            "   AND ((:isClustered = false) " +
+            "       OR (c.confirming = false)" +
+            "       OR  (:isClustered = true " +
+            "           AND c.probe <> :probe ))",
+            countQuery =
+            "SELECT COUNT(c) " +
             "FROM Check c " +
             "WHERE ((c.state = com.codeaim.urlcheck.common.model.State.WAITING " +
             "           AND c.refresh <= :currentDate) " +

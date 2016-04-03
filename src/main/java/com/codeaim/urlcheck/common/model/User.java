@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
+@Table(name="\"check\"")
 public final class User
 {
     @Id
@@ -36,7 +37,7 @@ public final class User
     private int version;
     private boolean emailVerified;
     @NotNull
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Role> roles;
 
     public User(

@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDateTime;
@@ -39,8 +41,37 @@ public class CheckRepositoryTest
 
     @Test
     public void findElectable() {
-        Page<Check> saved = checkRepository.findElectable("", false, LocalDateTime.now(ZoneOffset.UTC), null);
-        Assert.assertNotNull(saved);
+        Set<Role> roles = Sets.newHashSet(roleRepository.save(Sets.newHashSet(
+                Role.builder().name("admin").build(),
+                Role.builder().name("verified").build(),
+                Role.builder().name("registered").build())));
+
+        User parent = userRepository.save(User.builder()
+                .accessToken("testAccessToken")
+                .email("test@test.com")
+                .name("testUser")
+                .password("testPassword")
+                .resetToken("testResetToken")
+                .roles(roles)
+                .build());
+
+        Check save = checkRepository.save(Check.builder()
+                .probe("testProbe")
+                .interval(1)
+                .name("testCheck")
+                .state(State.WAITING)
+                .status(Status.UP)
+                .refresh(LocalDateTime.now(ZoneOffset.UTC).minusMinutes(1))
+                .user(parent)
+                .url("http://www.test.com")
+                .build());
+
+        Page<Check> elected = checkRepository.findElectable("", false, LocalDateTime.now(ZoneOffset.UTC), new PageRequest(0, 1, new Sort(Sort.Direction.ASC, "refresh")));
+
+        Assert.assertNotNull(elected);
+        Assert.assertEquals(1, elected.getContent().size());
+
+        userRepository.delete(parent);
     }
 
     @Test
